@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------- */
+/*  Design tokens — everything here becomes a Tailwind utility in v4      */
+/*  (e.g. --color-violet => bg-violet / text-violet / border-violet)      */
+/* ---------------------------------------------------------------------- */
+@theme {
+  --color-void: #0a0808;
+  --color-surface: #110e0e;
+  --color-surface-2: #181313;
+  --color-ink: #f5f6fa;
+  --color-muted: #9195a6;
+  --color-line: #ffffff1a;
+
+  --color-violet: #ff4747;
+  --color-violet-dim: #d42a2a;
+  --color-teal: #ff8f4d;
+  --color-amber: #ffc25c;
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --breakpoint-xs: 22.5rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+   html {
+    scroll-behavior: auto; /* Lenis takes over smooth scrolling */
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--color-void);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--color-violet-dim);
+    color: var(--color-void);
+  }
+
+  /* Visible, on-brand focus ring for keyboard users */
+  :focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-void);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-surface-2);
+    border-radius: 999px;
+    border: 2px solid var(--color-void);
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/*  Signature surfaces                                                    */
+/* ---------------------------------------------------------------------- */
+@layer components {
+  .glass-panel {
+    background: color-mix(in oklab, var(--color-surface) 65%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--color-line);
+  }
+
+  .glass-nav {
+    background: color-mix(in oklab, var(--color-void) 55%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+  }
+
+  .text-gradient {
+    background: linear-gradient(100deg, var(--color-violet) 10%, var(--color-teal) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .glow-violet {
+    box-shadow: 0 0 0 1px var(--color-line), 0 0 40px -8px color-mix(in oklab, var(--color-violet) 70%, transparent);
+  }
+
+  .code-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    color: var(--color-teal);
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/*  Ambient motion                                                        */
+/* ---------------------------------------------------------------------- */
+@layer utilities {
+  .animate-gradient-shift {
+    animation: gradient-shift 22s ease-in-out infinite;
+  }
+  .animate-float-slow {
+    animation: float 9s ease-in-out infinite;
+  }
+  .animate-float-slower {
+    animation: float 13s ease-in-out infinite;
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  33% { transform: translate3d(3%, -4%, 0) rotate(6deg) scale(1.08); }
+  66% { transform: translate3d(-3%, 3%, 0) rotate(-4deg) scale(0.96); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-18px) translateX(8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
